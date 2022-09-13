@@ -73,12 +73,24 @@ class RegisteredUser extends User
 
     private function setCreditCard($card)
     {
-        if($credit_card instanceof Card){
+        if($card instanceof Card){
             $this->credit_card = $card;
             return true;
         }else{
             return false;
         }
+    }
+
+    // Methods
+
+    public function placeOrder($card = null,$address = null)
+    {
+        if($this->cart->getTotalPrice() <= $this->credit_card->getBalance()){
+            $new_order = new Order($this->cart,$this->address,$this,$this->credit_card);
+            $this->cart->setList();
+            return $new_order;
+        }
+        return false;
     }
 }
 

@@ -31,13 +31,13 @@ include_once __DIR__ . '/models/Cart.php';
 // Istanziamo il carrello
 $card = new Card('1111222233334444','11/23',121);
 
-$card->setBalance(2000);
+$card->setBalance(2000);;
 
 // Istanziamo l'utente
 $user = new User('Pasquale','Pedoto');
 
 // Istanziamo i prodotti
-$croccantini = new FoodProduct('cibo','per mangiare','78','12/23','sempre');
+$croccantini = new FoodProduct('cibo','per mangiare',78,'12/23','sempre');
 $gioco = new ToysProduct('gioco','per giocare',20,'stoffa','20x34');
 $cuccia = new Doghouse('cuccia','per dormire',90,'190x75','blue','plastica');
 
@@ -51,10 +51,16 @@ $user->addToCart($cuccia);
 $address = new Address('Milano',83018,'Via Cesinola',23,'Italy');
 
 echo '<pre>';
+var_dump($card);
+echo '</pre>';
+
+echo '<pre>';
 var_dump($user->placeOrder($card,$address));
 echo '</pre>';
 
-
+echo '<pre>';
+var_dump($card);
+echo '</pre>';
 
 
 ?>

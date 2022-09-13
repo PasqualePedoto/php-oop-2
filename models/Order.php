@@ -3,6 +3,7 @@
 include_once __DIR__ . '/User.php';
 include_once __DIR__ . '/Cart.php';
 include_once __DIR__ . '/Address.php';
+include_once __DIR__ . '/RegisteredUser.php';
 
 class Order
 {
@@ -16,12 +17,12 @@ class Order
 
     // Constructor
 
-    public function __construct($cart,$address,$user)
+    public function __construct($cart,$address,$user,$card)
     {
         if($cart instanceof Cart && $user instanceof User && $address instanceof Address){
             $this->setList($cart);
             $this->setUser($user);
-            $this->setTotalPrice($cart);
+            $this->setTotalPrice($cart,$user,$card);
             $this->setAddress($address);
         }
     }
@@ -59,10 +60,16 @@ class Order
         return false;
     }
 
-    public function setTotalPrice($cart)
+    public function setTotalPrice($cart,$user,$card)
     {
         if($cart instanceof Cart && $cart->getTotalPrice() > 0){
-            $this->total_price = $cart->getTotalPrice();
+            if($user instanceof RegisteredUser){
+                $this->total_price = $cart->getTotalPrice() - ($cart->getTotalPrice()*20/100);
+                $this->user->credit_card->setBalance($this->credit_card->getBalance() - $this->total_price);
+            }else{
+                $this->total_price = $cart->getTotalPrice();
+                $card->setBalance($card->getBalance() - $this->total_price);
+            }
             return true;
         }
         return false;

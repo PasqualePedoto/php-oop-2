@@ -85,8 +85,7 @@ class User
     public function placeOrder($card,$address)
     {
         if($this->cart->getTotalPrice() <= $card->getBalance()){
-            $new_order = new Order($this->cart,$address,$this);
-            $card->setBalance($card->getBalance() - $this->cart->getTotalPrice());
+            $new_order = new Order($this->cart,$address,$this,$card);
             $this->cart->setList();
             return $new_order;
         }
